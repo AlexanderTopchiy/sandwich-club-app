@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
+
+import java.util.Arrays;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -43,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +59,30 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    /**
+     * Populate the UI after parsing JSON.
+     *
+     * @param sandwich is contain sandwich info.
+     */
+    private void populateUI(Sandwich sandwich) {
+        TextView alsoKnownAs_text_view = findViewById(R.id.also_known_tv);
+        String alsoString = "";
+        for (String str : sandwich.getAlsoKnownAs()) {
+            alsoString += str + "\n";
+        }
+        alsoKnownAs_text_view.setText(alsoString);
 
+        TextView placeOfOrigin_text_view = findViewById(R.id.origin_tv);
+        placeOfOrigin_text_view.setText(sandwich.getPlaceOfOrigin());
+
+        TextView description_text_view = findViewById(R.id.description_tv);
+        description_text_view.setText(sandwich.getDescription());
+
+        TextView ingredients_text_view = findViewById(R.id.ingredients_tv);
+        String ingredientsString = "";
+        for (String str : sandwich.getIngredients()) {
+            ingredientsString += str + "\n";
+        }
+        ingredients_text_view.setText(ingredientsString);
     }
 }
